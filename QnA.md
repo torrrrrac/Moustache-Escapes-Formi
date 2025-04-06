@@ -1,4 +1,4 @@
-# Submission Questions
+# Submission Questions and Answers
 
 ## What was your initial thought process when you first read the problem statement, and how did you break it down into smaller, manageable parts?
 
