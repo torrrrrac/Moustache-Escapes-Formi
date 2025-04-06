@@ -4,33 +4,30 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from spellchecker import SpellChecker
 
-# Initialize the SpellChecker.
+# Initialize the SpellChecker
 spell = SpellChecker()
 
-# Load the custom dictionary from the CSV file "worldcities.csv".
-# The CSV is assumed to have at least "city" and "country" columns.
+# Load city names from IndiaCities.csv
 custom_cities = []
-with open("worldcities.csv", newline='', encoding='utf-8') as csvfile:
-    reader = csv.DictReader(csvfile)
+with open("IndiaCities.csv", newline='', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    next(reader)  # Skip header row
     for row in reader:
-        # Filter only for Indian cities.
-        if row.get("country") and row["country"].strip().lower() == "india":
-            city = row.get("city")
+        if row:
+            city = row[0].strip()
             if city:
-                custom_cities.append(city.strip())
+                custom_cities.append(city)
 
-# Load these custom city names into the SpellChecker's dictionary.
+# Load city names into the spellchecker's dictionary
 spell.word_frequency.load_words(custom_cities)
 
 def correct_query(query):
     """
-    Correct words in the input query using SpellChecker's correction.
-    This will use our custom dictionary loaded from worldcities.csv.
+    Correct words in the input query using SpellChecker
     """
     corrected_words = []
     for word in query.split():
-        corrected = spell.correction(word)
-        corrected_words.append(corrected)
+        corrected_words.append(spell.correction(word))
     return ' '.join(corrected_words)
 
 
